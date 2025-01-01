@@ -1,14 +1,18 @@
-import { useState } from 'react'
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import './App.css'
-import LoginForm from './components/LoginForm'
+import LoginForm from './pages/LoginForm.jsx'
+import Dashboard from './pages/Daschboard'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <LoginForm />
-    </>
+    <Router>
+        <Routes>
+            <Route path="/" element={<LoginForm />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+
+    </Router>
   )
 }
 

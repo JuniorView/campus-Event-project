@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './LoginForm.css';
+import {useNavigate} from "react-router-dom";
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const LoginForm = () => {
     });
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,6 +32,7 @@ const LoginForm = () => {
             if (response.ok) {
                // alert('Registration successful!'); message will pop-up
                 setSuccessMessage(data.message); // Set success message
+                navigate('/dashboard');
             } else {
                // alert(`Error: ${data.error}`);
                 setErrorMessage(data.error); // Set error message

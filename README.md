@@ -8,7 +8,7 @@ Welche Konfigurationen notwendig sind.
 Beispiel:
 
 --> Installation
-1. MongoDB und Node.js installieren.
+1. MongoDB/Mongodbcompass und Node.js installieren.
 2. Projekt klonen:
 git clone <repository-url>
 
@@ -18,6 +18,8 @@ npm install
 
 --> Starten backend 
 1. MongoDB starten (lokal ).
+database erstellen mit genau den  Namen "campusEvents" und mit Collection "User"
+  
 2. Server starten:
 npm run start
 
