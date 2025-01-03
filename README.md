@@ -1,6 +1,28 @@
 # campus Event project
 
+--> Dokumentation 
 
+Wie das Projekt installiert wird.
+Wie es gestartet wird.
+Welche Konfigurationen notwendig sind.
+Beispiel:
+
+--> Installation
+1. MongoDB und Node.js installieren.
+2. Projekt klonen:
+git clone <repository-url>
+
+3. Abhängigkeiten installieren:(jeweils in backend und frontend für  die nodes_modules)
+npm install 
+
+
+--> Starten backend 
+1. MongoDB starten (lokal ).
+2. Server starten:
+npm run start
+
+-->starten frontend
+npm dev run 
 
 ## Getting started
 
