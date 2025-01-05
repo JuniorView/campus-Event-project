@@ -8,7 +8,8 @@ const connectDB = async () => {
         return;
     }
     try {
-        await mongoose.connect('mongodb://localhost:27017/campusEvents', );
+        await  mongoose.connect('mongodb://127.0.0.1:27017/campusEvents');
+
         isConnected = true;
         console.log('Database connected successfully');
     } catch (error) {

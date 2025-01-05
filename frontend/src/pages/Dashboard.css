@@ -4,7 +4,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-
 .dashboard {
     background-color: #A9A9A9;
     display: grid;
@@ -14,16 +13,70 @@ body {
     box-shadow: 0 4px 6px rgba(169, 169, 169, 1);
     width: 100%;
     max-width: 400px;
+    height: 560px; /* Set the height of the gray box */
+    position: relative;
+    right: 15px;
 }
+
 header {
     background-color: #444;
-    padding: 20px;
+    padding: 10px 20px;
     border-bottom: 2px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 70px; /* Increase the height of the header */
+    position: relative;
+    z-index: 1;
+    margin-bottom: 5px; /* Reduce spacing below the header */
+}
+
+header h1 {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+    margin: 0;
+    line-height: 70px; /* Center the text vertically within the header */
+    margin-left: 15px;
+    
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: auto; /* Vertically center the icons */
+}
+
+.icon:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+    transition: transform 0.2s ease-in-out;
+}
+
+.home-icon {
+    margin-right: auto;
+    margin-top: 10px;
+
+}
+
+.profile-icon {
+    margin-left: auto;
 }
 
 main {
     flex: 1;
     padding: 20px;
+    text-align: center;
+    margin-top: -10px; /* Reduce spacing between "Meine Schichten" and the header */
+}
+
+main section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #333;
 }
 
 .event-card {
@@ -32,6 +85,8 @@ main {
     padding: 15px;
     border-radius: 8px;
     width: 80%;
+    color: white;
+    font-size: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -39,21 +94,39 @@ footer {
     background-color: #222;
     padding: 10px;
     font-size: 14px;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin-top: 15px;
+    position: relative; /* Enable relative positioning */
+    right: 10px; /* Move the footer 20px to the right */
+    
 }
+
+footer p {
+    margin: 5px 0;
+}
+
 @media (max-width: 360px) {
-    .dashboard-header h1 {
+    header h1 {
         font-size: 1.2rem;
     }
 
-    .schichten-item {
+    .icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    .event-card {
         padding: 12px;
     }
 
-    .schichten-item h2 {
-        font-size: 1rem;
+    .event-card {
+        font-size: 0.9rem;
     }
 
-    .schichten-item p {
+    footer p {
         font-size: 0.8rem;
     }
 }

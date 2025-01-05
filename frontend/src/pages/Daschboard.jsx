@@ -1,12 +1,31 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 
+import profileIcon from "../images/profile.jpg"
+import homeIcon from "../images/home.jpg"
+
 const Dashboard = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="dashboard">
-            <header>
+            <header className="dashboard-header">
+                {/* Home Icon */}
+                <img 
+                    src={homeIcon}
+                    alt="Home Icon" 
+                    className="icon home-icon" 
+                    onClick={() => navigate('/dashboard')} 
+                />
                 <h1>Campus Events</h1>
-                <p>Willkommen zu deinen Events!</p>
+                {/* Profile Icon */}
+                <img 
+                    src={profileIcon}
+                    alt="Profile Icon" 
+                    className="icon profile-icon" 
+                    onClick={() => navigate('/profile')} 
+                />
             </header>
             <main>
                 <section>

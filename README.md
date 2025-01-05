@@ -14,7 +14,7 @@ git clone <repository-url>
 
 3. Abhängigkeiten installieren:(jeweils in backend und frontend für  die nodes_modules)
 npm install 
-
+npm install express-session(für backend )
 
 --> Starten backend 
 1. MongoDB starten (lokal ).
