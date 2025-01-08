@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, getUserProfile,logoutUser } = require('../controllers/userController');
+const {getUserDetails, registerUser, getUserProfile,logoutUser } = require('../controllers/userController');
 const validateUser = require('../middlewares/validateUser');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -12,5 +12,6 @@ router.post('/register', validateUser, registerUser);
 router.get('/profile', authMiddleware, getUserProfile);
 // Logout Route
 router.post('/logout', logoutUser);
+router.get('/details', authMiddleware, getUserDetails);
 
 module.exports = router;

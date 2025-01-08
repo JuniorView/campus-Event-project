@@ -2,19 +2,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Full viewport height */
+    min-height: 100vh; 
     font-family: Arial, sans-serif;
 }
 
 .profile-box {
-    background-color: #A9A9A9; /* Gray background for the box */
+    background-color: #A9A9A9; 
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 95%;
-    max-width: 1000px; /* Increased max-width for a wider box */
+    max-width: 1000px; 
     min-width: 270px;
-    min-height: 500px; /* Height for content */
+    min-height: 500px;
     position: relative;
 }
 
@@ -23,7 +23,7 @@
     height: 30px;
     cursor: pointer;
     position: absolute;
-    top: 20px; /* Position at the top-left of the gray box */
+    top: 20px;
     left: 20px;
     transition: transform 0.2s ease-in-out;
 }
@@ -36,8 +36,8 @@
     text-align: center;
     font-size: 1.5rem;
     color: #333;
-    margin-top: 60px; /* Space below the home icon */
-    margin-bottom: 20px; /* Space before the profile image */
+    margin-top: 60px; 
+    margin-bottom: 20px; 
 }
 
 .profile-image-container {
@@ -74,14 +74,14 @@
     text-align: center;
     margin-top: 20px;
     display: flex;
-    justify-content: center; /* Center the button horizontally */
-    align-items: center;     /* Center the button vertically */
-    width: 100%;             /* Ensure the container takes the full width */
+    justify-content: center; 
+    align-items: center;     
+    width: 100%;            
 }
 
-/* Initial button style (blue) */
+
 .logout-btn {
-    background-color: #1976d2; /* Blue */
+    background-color: #1976d2; 
     color: white;
     padding: 10px 20px;
     font-size: 1rem;
@@ -95,20 +95,20 @@
 }
 
 .logout-btn:hover {
-    background-color: #1565c0; /* Darker blue on hover */
+    background-color: #1565c0; 
 }
 
-/* Applied when button is clicked (red color) */
+
 .logout-btn.clicked {
-    background-color: #d32f2f; /* Red */
+    background-color: #d32f2f;
 }
 
-/* Styling for the symbol */
+
 .logout-symbol {
-    margin-right: 10px; /* Space between the symbol and text */
+    margin-right: 10px;
 }
 
-/* Error messages */
+
 .profile-error {
     color: red;
     text-align: center;

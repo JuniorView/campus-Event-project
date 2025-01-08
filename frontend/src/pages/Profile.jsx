@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
-import profileIcon from "../images/profile.jpg"; // Ensure the path is correct
-import homeIcon from "../images/home.jpg"; // Ensure the path is correct
+import profileIcon from "../images/profile.jpg"; 
+import homeIcon from "../images/home.jpg"; 
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState('');
-  const [isClicked, setIsClicked] = useState(false); // Track first click
+  const [isClicked, setIsClicked] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Profile = () => {
         console.error('Error logging out:', err);
       }
     } else {
-      setIsClicked(true); // Mark the button as clicked once
+      setIsClicked(true); 
     }
   };
 
@@ -57,7 +57,7 @@ const Profile = () => {
         </div>
       ) : profile ? (
         <div className="profile-box">
-          {/* Home Icon */}
+          
           <img
             src={homeIcon}
             alt="Home Icon"
@@ -65,10 +65,10 @@ const Profile = () => {
             onClick={() => navigate('/dashboard')}
           />
 
-          {/* Profile Header */}
+         
           <h1 className="profile-header">Profile</h1>
 
-          {/* Profile Picture */}
+         
           <div className="profile-image-container">
             <img
               src={profileIcon}
@@ -77,14 +77,14 @@ const Profile = () => {
             />
           </div>
 
-          {/* White Box for Details */}
+         
           <div className="profile-details-box">
             <p><strong>Vorname:</strong> {profile.firstName}</p>
             <p><strong>Nachname:</strong> {profile.lastName}</p>
             <p><strong>Email:</strong> {profile.email}</p>
           </div>
 
-          {/* Logout Button */}
+          
           <div className="logout-btn-container">
             <button
               onClick={handleLogout}
