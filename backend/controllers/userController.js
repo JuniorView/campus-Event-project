@@ -24,7 +24,7 @@ const userController = {
             res.status(201).json({ message: 'Logged in successfully' });
         }
     } catch (error) {
-        next(error);  // Pass error to error handling middleware
+        next(error);  
     }
 },
 

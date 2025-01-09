@@ -18,8 +18,11 @@ npm install express-session(für backend )
 
 --> Starten backend 
 1. MongoDB starten (lokal ).
-database erstellen mit genau den  Namen "campusEvents" und mit Collection "User"
-  
+database erstellen mit genau den  Namen "campusEvents" und mit Collections:
+ "User"
+ "events"
+ "shifts"
+ import the data into the shifts and events collections from the data folder
 2. Server starten:
 npm run start
 

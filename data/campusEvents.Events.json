@@ -1,0 +1,50 @@
+[{
+  "_id": {
+    "$oid": "677b0aeb1415aa3949061509"
+  },
+  "name": "Weihnachten",
+  "date": "2025-12-25",
+  "roles": [
+    {
+      "id": "bar",
+      "label": "Bar"
+    },
+    {
+      "id": "springer",
+      "label": "Springer"
+    },
+    {
+      "id": "cocktail",
+      "label": "Cocktail"
+    },
+    {
+      "id": "karaoke",
+      "label": "Karaoke"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677b0b021415aa394906150b"
+  },
+  "name": "Halloween",
+  "date": "2025-10-31",
+  "roles": [
+    {
+      "id": "bar",
+      "label": "Bar"
+    },
+    {
+      "id": "springer",
+      "label": "Springer"
+    },
+    {
+      "id": "cocktail",
+      "label": "Cocktail"
+    },
+    {
+      "id": "karaoke",
+      "label": "Karaoke"
+    }
+  ]
+}]

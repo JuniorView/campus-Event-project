@@ -1,0 +1,80 @@
+[{
+  "_id": {
+    "$oid": "677d28809aab75f91f4b91e9"
+  },
+  "event": "Halloween",
+  "role": "bar",
+  "timeSlots": [
+    {
+      "start": {
+        "$date": "2025-10-31T09:00:00.000Z"
+      },
+      "end": {
+        "$date": "2025-10-31T10:00:00.000Z"
+      },
+      "userId": null,
+      "status": "available",
+      "conflict": false,
+      "_id": {
+        "$oid": "677d28809aab75f91f4b91ea"
+      }
+    },
+    {
+      "start": {
+        "$date": "2025-10-31T10:00:00.000Z"
+      },
+      "end": {
+        "$date": "2025-10-31T11:00:00.000Z"
+      },
+      "userId": null,
+      "status": "available",
+      "conflict": false,
+      "_id": {
+        "$oid": "677d28809aab75f91f4b91eb"
+      }
+    },
+    {
+      "start": {
+        "$date": "2025-10-31T11:00:00.000Z"
+      },
+      "end": {
+        "$date": "2025-10-31T12:00:00.000Z"
+      },
+      "userId": null,
+      "status": "available",
+      "conflict": false,
+      "_id": {
+        "$oid": "677d28809aab75f91f4b91ec"
+      }
+    },
+    {
+      "start": {
+        "$date": "2025-10-31T12:00:00.000Z"
+      },
+      "end": {
+        "$date": "2025-10-31T13:00:00.000Z"
+      },
+      "userId": null,
+      "status": "available",
+      "conflict": false,
+      "_id": {
+        "$oid": "677d28809aab75f91f4b91ed"
+      }
+    },
+    {
+      "start": {
+        "$date": "2025-10-31T13:00:00.000Z"
+      },
+      "end": {
+        "$date": "2025-10-31T14:00:00.000Z"
+      },
+      "userId": null,
+      "status": "available",
+      "conflict": false,
+      "_id": {
+        "$oid": "677d28809aab75f91f4b91ee"
+      }
+    }
+  ],
+  "__v": 0
+}]
