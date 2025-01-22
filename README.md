@@ -27,7 +27,7 @@ database erstellen mit genau den  Namen "campusEvents" und mit Collections:
 npm run start
 
 -->starten frontend
-npm dev run 
+npm run dev 
 
 ## Getting started
 
