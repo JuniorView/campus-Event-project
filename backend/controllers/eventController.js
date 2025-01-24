@@ -1,5 +1,7 @@
-const Events = require('../models/eventModel'); // Corrected to 'Events'
-const Shift = require('../models/shiftModel');
+const fs = require('fs'); // Modul für Dateioperationen
+const path = require('path');
+const {parse} = require("dotenv"); // Modul für Dateipfade
+const filePath = path.join(__dirname, '../data.json');
 
 
 const eventController = {
@@ -169,19 +171,19 @@ const eventController = {
 
     // Fetch all events
     getAllEvents: async (req, res) => {
-        try {
-            const events = await Events.find({});  // Fetch all events from the database (corrected model)
-            if (events.length === 0) {
-                return res.status(404).json({ message: 'No events found' });
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                return res.status(500).json({error: 'Error reading users data file'});
             }
-            res.status(200).json(events);  // Send all events as JSON response
-        } catch (error) {
-            res.status(500).json({ message: 'Error fetching events', error: error.message });
-        }
+            const events = JSON.parse(data).events;
+            if (events.length === 0) {
+                return res.status(404).json({ error: 'No events found'});
+            }
+            res.status(200).json(events);
+        })
     },
     unregisterShift: async (req, res) => {
         try {
-            console.log('Request Body to Unregister:', req.body); // Log the request body for debugging
             const { startTime, endTime, event, role } = req.body;
             const user = req.user;
     
