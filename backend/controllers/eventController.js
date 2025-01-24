@@ -26,7 +26,7 @@ const eventController = {
             return res.status(400).json({ message: 'Shift is already taken or not available' });
         }
 
-        shiftService.setTimeslot(eventName, role, timeSlot, user.id, "available");
+        shiftService.setTimeslot(eventName, role, timeSlot.id, user.id, "available");
 
         res.status(200).json({ message: 'Shift registered successfully' });
     },

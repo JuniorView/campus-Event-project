@@ -1,7 +1,7 @@
 const fs = require('fs'); // Modul für Dateioperationen
 const path = require('path');
 const filePath = path.join(__dirname, '../data.json');
-const eventService = require(path.resolve('./services/eventService'));
+const eventService = require('./eventService');
 
 const shiftService = {
     getAllShifts(){
@@ -25,8 +25,28 @@ const shiftService = {
     },
 
     setTimeslot(eventName, role, timeslotId, userId, status){
-        //ToDo:Write into a file
+        let data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
+        const eventId = eventService.getEventByName(eventName).id;
+        let shiftIndex = 0;
+        let slotIndex = 0;
+        for (const currentShift in data.shifts) {
+            if (data.shifts[currentShift].event_id === eventId &&
+                data.shifts[currentShift].role.toLowerCase() === role.toLowerCase()) {
+                shiftIndex = currentShift;
+                break;
+            }
+        }
+        const timeslot = data.shifts[shiftIndex].timeslot;
+        for (const currentSlot in timeslot) {
+            if (timeslot[currentSlot].id === timeslotId){
+                slotIndex = currentSlot;
+                break;
+            }
+        }
+        data.shifts[shiftIndex].timeslot[slotIndex].user_id = userId;
+        data.shifts[shiftIndex].timeslot[slotIndex].status = status;
+        fs.writeFileSync(filePath, JSON.stringify(data));
     }
 }
 module.exports = shiftService;
