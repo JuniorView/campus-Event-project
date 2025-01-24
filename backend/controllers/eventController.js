@@ -61,34 +61,44 @@ const eventController = {
 
     // Fetch all shifts for a specific event and role
     getShifts: async (req, res) => {
-        try {
-            console.log('User:', req.user); // Log user details
-            console.log('Headers:', req.headers); // Log request headers
-            const { eventName, role } = req.query;  // Extract eventName and role from query string
-    
-            if (!eventName || !role) {
-                return res.status(400).json({ message: "Missing eventName or role in the query" });
+        const { eventName, role } = req.query;  // Extract eventName and role from query string
+
+        if (!eventName || !role) {
+            return res.status(400).json({ message: "Missing eventName or role in the query" });
+        }
+
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                return res.status(500).json({error: 'Error reading users data file'});
             }
-    
-            // Find the event by name (case-insensitive)
-            const event = await Events.findOne({
-                name: { $regex: new RegExp(`^${eventName}$`, 'i') } // Case-insensitive search
-            });
-    
+            const events = JSON.parse(data).events;
+            const shifts = JSON.parse(data).shifts;
+
+            // Find the event by name
+            let event = null;
+            for (const current of events) {
+                if (current.name.toLowerCase() === eventName.toLowerCase()) {
+                    event = current;
+                    break;
+                }
+            }
+
             if (!event) {
-                return res.status(404).json({ message: 'Event not found' });
+                return res.status(404).json({message: 'Event not found'});
             }
-    
+
             // Fetch the shift for the event and role
-            const shift = await Shift.findOne({
-                event: event.name,
-                role: role
-            }).populate('timeSlots.userId', 'firstName lastName'); // Populate userId to get first and last names
-    
+            let shift = null;
+            for (const current of shifts) {
+                if (current.event_id === event.id && current.role.toLowerCase() === role.toLowerCase()) {
+                    shift = current;
+                    break;
+                }
+            }
             if (!shift) {
                 return res.status(404).json({ message: 'Shifts not found for this event and role' });
             }
-    
+
             // Map the timeSlots and populate user details
             const updatedSlots = shift.timeSlots.map(slot => {
                 return {
@@ -100,12 +110,8 @@ const eventController = {
                     conflict: slot.conflict
                 };
             });
-    
-            res.status(200).json({ timeSlots: updatedSlots });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Error fetching shifts', error: error.message });
-        }
+            res.status(200).json({timeSlots: updatedSlots});
+        });
     },
 
     // Get available shifts for a specific event and role

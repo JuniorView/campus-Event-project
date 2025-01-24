@@ -22,7 +22,14 @@ module.exports = (req, res, next) => {
         const users = JSON.parse(data).user;
 
         // Benutzer mit eingegebener E-Mail wird gesucht
-        const user = users.find((u) => u.email === email);
+        let user = null;
+        for (const current of users) {
+            if (current.email === email) {
+                user = current;
+                console.log("user found");
+                break;
+            }
+        }
 
         if (user) {
             // Überprüfen der Benutzerdaten
