@@ -1,5 +1,4 @@
-const path = require('path');
-const userService = require(path.resolve('./services/userService'));
+const userService = require('../services/userService');
 
 
 const userController = {
@@ -26,7 +25,7 @@ const userController = {
             return res.status(400).json({error: 'User data does not match.'});
         }
 
-        req.session.userId = user._id;  // Save user ID for existing users
+        req.session.userId = user.id;  // Save user ID for existing users
         req.session.firstName = user.firstName;  // Save firstName
         req.session.lastName = user.lastName;    // Save lastName
 

@@ -1,7 +1,5 @@
-const path = require('path');
-const eventService = require(path.resolve('./services/eventService'));
-const userService = require(path.resolve('./services/userService'));
-const shiftService = require(path.resolve('./services/shiftService'));
+const eventService = require('../services/eventService');
+const shiftService = require('../services/shiftService');
 
 const eventController = {
     registerShift: async (req, res) => {
@@ -47,7 +45,7 @@ const eventController = {
         }
 
         // Map the timeSlots and populate user details
-        const updatedSlots = shifts.timeSlots.map(slot => {
+        const updatedSlots = shifts.timeslot.map(slot => {
             return {
                 _id: slot._id,
                 start: slot.start,

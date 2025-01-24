@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const userService = require('../services/userService');
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -8,9 +8,9 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ error: 'Unauthorized. Please log in.' });
     }
 
-    const user = await User.findById(userId).select('-password'); // Exclude password
-    if (!user) {
-      return res.status(401).json({ error: 'User not found. Please log in again.' });
+    const user = userService.getUserById(userId); // Exclude password
+    if (user.error) {
+      return res.status(user.status).json(user.error);
     }
 
     req.user = user; // Attach user info to request object

@@ -10,7 +10,7 @@ const userService = {
     getUserByEmail(email){
         const users = this.getAllUsers();
         if (!users){
-            return JSON.parse("{error: 'Something went wrong', status:500}");
+            return {error: 'Something went wrong', status:500};
         }
         // Find the event by name
         for (const current of users) {
@@ -18,7 +18,20 @@ const userService = {
                 return current;
             }
         }
-        return JSON.parse("{error: 'User not found', status:404}");
+        return {error: 'User not found', status:404};
+    },
+    getUserById(id){
+        const users = this.getAllUsers();
+        if (!users){
+            return {error: 'Something went wrong', status:500};
+        }
+        // Find the event by name
+        for (const current of users) {
+            if (current.id === id) {
+                return current;
+            }
+        }
+        return {error: 'User not found', status:404};
     }
 }
 module.exports = userService;

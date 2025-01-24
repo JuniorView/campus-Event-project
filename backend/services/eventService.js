@@ -10,7 +10,7 @@ const eventService = {
     getEventByName (eventName) {
         const events = this.getAllEvents();
         if (!events){
-            return JSON.parse("{error: 'Something went wrong', status:500}");
+            return {error: 'Something went wrong', status:500};
         }
         // Find the event by name
         for (const current of events) {
@@ -18,7 +18,7 @@ const eventService = {
                 return current;
             }
         }
-        return JSON.parse("{error: 'Event not found', status:404}");
+        return {error: 'Event not found', status:404};
     }
 }
 module.exports = eventService;
