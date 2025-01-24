@@ -75,22 +75,22 @@ const eventController = {
             const shifts = JSON.parse(data).shifts;
 
             // Find the event by name
-            let event = null;
+            let eventId = null;
             for (const current of events) {
                 if (current.name.toLowerCase() === eventName.toLowerCase()) {
-                    event = current;
+                    eventId = current.id;
                     break;
                 }
             }
 
-            if (!event) {
+            if (!eventId) {
                 return res.status(404).json({message: 'Event not found'});
             }
 
             // Fetch the shift for the event and role
             let shift = null;
             for (const current of shifts) {
-                if (current.event_id === event.id && current.role.toLowerCase() === role.toLowerCase()) {
+                if (current.event_id === eventId && current.role.toLowerCase() === role.toLowerCase()) {
                     shift = current;
                     break;
                 }
@@ -116,24 +116,48 @@ const eventController = {
 
     // Get available shifts for a specific event and role
     getAvailableShifts: async (req, res) => {
-        try {
-            const { eventId, role } = req.query;
-    
-            console.log('eventId:', eventId, 'role:', role); // Debugging to see if params are correct
-    
-            // Find the shift based on eventId and role
-            const shift = await Shift.findOne({ event: eventId, role });
-    
-            if (!shift) {
-                return res.status(404).json({ message: 'Event or role not found' });
+        const { eventName, role } = req.query;
+
+        if (!eventName || !role) {
+            return res.status(400).json({ message: "Missing eventName or role in the query" });
+        }
+
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                return res.status(500).json({error: 'Error reading users data file'});
             }
-    
+            const events = JSON.parse(data).events;
+            const shifts = JSON.parse(data).shifts;
+
+            // Find the event by name
+            let eventId = null;
+            for (const current of events) {
+                if (current.name.toLowerCase() === eventName.toLowerCase()) {
+                    eventId = current.id;
+                    break;
+                }
+            }
+
+            if (!eventId) {
+                return res.status(404).json({message: 'Event not found'});
+            }
+
+            // Fetch the shift for the event and role
+            let shift = null;
+            for (const current of shifts) {
+                if (current.event_id === eventId && current.role.toLowerCase() === role.toLowerCase()) {
+                    shift = current;
+                    break;
+                }
+            }
+            if (!shift) {
+                return res.status(404).json({message: 'Shifts not found for this event and role'});
+            }
+
             // Filter for available slots
             const availableSlots = shift.timeSlots.filter(ts => ts.status === 'available');
-            res.status(200).json({ availableSlots });
-        } catch (error) {
-            res.status(500).json({ message: 'Error fetching available shifts', error: error.message });
-        }
+            res.status(200).json({availableSlots});
+        });
     },
 
     // Get event details by name
