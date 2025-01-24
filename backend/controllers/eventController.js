@@ -1,117 +1,63 @@
-const fs = require('fs'); // Modul für Dateioperationen
 const path = require('path');
-const {parse} = require("dotenv"); // Modul für Dateipfade
-const filePath = path.join(__dirname, '../data.json');
-
+const eventService = require(path.resolve('./services/eventService'));
+const userService = require(path.resolve('./services/userService'));
+const shiftService = require(path.resolve('./services/shiftService'));
 
 const eventController = {
     registerShift: async (req, res) => {
-        try {
-            console.log('Request Body:', req.body); // Log the request body for debugging
-            const { startTime, endTime, event, role } = req.body;
-            const user = req.user;
-    
-            // Convert to Date objects
-            let start = new Date(startTime);
-            let end = new Date(endTime);
-    
-            console.log("Parsed Start:", start, "Parsed End:", end);
-    
-            console.log("Querying for shift with:", event, role, "start:", start, "end:", end);
-    
-            // Find the specific shift for the event and role
-            const shift = await Shift.findOne({
-                event: { $regex: new RegExp(`^${event}$`, 'i') }, // Case-insensitive match for event
-                role,
-                "timeSlots.start": start,
-                "timeSlots.end": end,
-            });
-    
-            console.log("Matched Shift:", shift);
-    
-            if (!shift) {
-                return res.status(404).json({ message: 'Shift not found' });
-            }
-    
-            // Find the specific time slot in the shift
-            const timeSlot = shift.timeSlots.find(
-                ts => ts.start.getTime() === start.getTime() &&
-                      ts.end.getTime() === end.getTime()
-            );
-    
-            console.log("Matched TimeSlot:", timeSlot);
-    
-            if (!timeSlot || timeSlot.status !== 'available') {
-                return res.status(400).json({ message: 'Shift is already taken or not available' });
-            }
-    
-            // Update the time slot with user details
-            timeSlot.status = 'registered';
-            timeSlot.userId = user._id; // Set userId directly here
-    
-            // Save the updated shift document
-            await shift.save();
-    
-            res.status(200).json({ message: 'Shift registered successfully' });
-        } catch (error) {
-            console.error('Error registering shift:', error);
-            res.status(500).json({ message: 'Error registering shift', error: error.message });
+        const { startTime, endTime, eventName, role } = req.body;
+        const user = req.user;
+
+        // Convert to Date objects
+        let start = new Date(startTime);
+        let end = new Date(endTime);
+
+        const shifts = shiftService.getShiftsByEventAndRole(eventName, role);
+        if (shifts.error) {
+            return res.status(shifts.status).json(shifts.error);
         }
+
+        let timeSlot = null;
+        for (const shift of shifts.timeslot) {
+            if (shift.start === start && shift.end === end){
+                timeSlot = shift;
+            }
+
+        }
+        if (!timeSlot || timeSlot.status !== 'available') {
+            return res.status(400).json({ message: 'Shift is already taken or not available' });
+        }
+
+        shiftService.setTimeslot(eventName, role, timeSlot, user.id, "available");
+
+        res.status(200).json({ message: 'Shift registered successfully' });
     },
 
     // Fetch all shifts for a specific event and role
     getShifts: async (req, res) => {
-        const { eventName, role } = req.query;  // Extract eventName and role from query string
+        const { eventName, role } = req.query;
 
         if (!eventName || !role) {
             return res.status(400).json({ message: "Missing eventName or role in the query" });
         }
+        // get shifts
+        const shifts = shiftService.getShiftsByEventAndRole(eventName, role);
+        if (shifts.error) {
+            return res.status(shifts.status).json(shifts.error);
+        }
 
-        fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-                return res.status(500).json({error: 'Error reading users data file'});
-            }
-            const events = JSON.parse(data).events;
-            const shifts = JSON.parse(data).shifts;
-
-            // Find the event by name
-            let eventId = null;
-            for (const current of events) {
-                if (current.name.toLowerCase() === eventName.toLowerCase()) {
-                    eventId = current.id;
-                    break;
-                }
-            }
-
-            if (!eventId) {
-                return res.status(404).json({message: 'Event not found'});
-            }
-
-            // Fetch the shift for the event and role
-            let shift = null;
-            for (const current of shifts) {
-                if (current.event_id === eventId && current.role.toLowerCase() === role.toLowerCase()) {
-                    shift = current;
-                    break;
-                }
-            }
-            if (!shift) {
-                return res.status(404).json({ message: 'Shifts not found for this event and role' });
-            }
-
-            // Map the timeSlots and populate user details
-            const updatedSlots = shift.timeSlots.map(slot => {
-                return {
-                    _id: slot._id,
-                    start: slot.start,
-                    end: slot.end,
-                    user: slot.userId ? `${slot.userId.firstName} ${slot.userId.lastName}` : null, // Show user's name if registered
-                    status: slot.status,
-                    conflict: slot.conflict
-                };
-            });
-            res.status(200).json({timeSlots: updatedSlots});
+        // Map the timeSlots and populate user details
+        const updatedSlots = shifts.timeSlots.map(slot => {
+            return {
+                _id: slot._id,
+                start: slot.start,
+                end: slot.end,
+                user: slot.userId ? `${slot.userId.firstName} ${slot.userId.lastName}` : null, // Show user's name if registered
+                status: slot.status,
+                conflict: slot.conflict
+            };
         });
+        res.status(200).json({timeSlots: updatedSlots});
     },
 
     // Get available shifts for a specific event and role
@@ -122,147 +68,65 @@ const eventController = {
             return res.status(400).json({ message: "Missing eventName or role in the query" });
         }
 
-        fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-                return res.status(500).json({error: 'Error reading users data file'});
-            }
-            const events = JSON.parse(data).events;
-            const shifts = JSON.parse(data).shifts;
+        const shifts = shiftService.getShiftsByEventAndRole(eventName, role);
+        if (shifts.error) {
+            return res.status(shifts.status).json(shifts.error);
+        }
 
-            // Find the event by name
-            let eventId = null;
-            for (const current of events) {
-                if (current.name.toLowerCase() === eventName.toLowerCase()) {
-                    eventId = current.id;
-                    break;
-                }
-            }
-
-            if (!eventId) {
-                return res.status(404).json({message: 'Event not found'});
-            }
-
-            // Fetch the shift for the event and role
-            let shift = null;
-            for (const current of shifts) {
-                if (current.event_id === eventId && current.role.toLowerCase() === role.toLowerCase()) {
-                    shift = current;
-                    break;
-                }
-            }
-            if (!shift) {
-                return res.status(404).json({message: 'Shifts not found for this event and role'});
-            }
-
-            // Filter for available slots
-            const availableSlots = shift.timeSlots.filter(ts => ts.status === 'available');
-            res.status(200).json({availableSlots});
-        });
+        // Filter for available slots
+        const availableSlots = shift.timeSlots.filter(ts => ts.status === 'available');
+        res.status(200).json({availableSlots});
     },
 
     // Get event details by name
     getEventDetailsByName: async (req, res) => {
-        try {
-            const { eventName } = req.params;
-    
-            const sanitizedEventName = eventName.replace(/-/g, ' ');
-    
-            // Search for the event by name (case-insensitive)
-            const event = await Events.findOne({ name: { $regex: new RegExp(`^${sanitizedEventName}$`, 'i') } });
-    
-            if (!event) {
-                return res.status(404).json({ message: 'Event not found' });
-            }
-    
-            res.status(200).json(event);
-        } catch (error) {
-            res.status(500).json({ message: 'Error fetching event details by name', error: error.message });
+        const { eventName } = req.params;
+
+        const sanitizedEventName = eventName.replace(/-/g, ' ');
+        const event = eventService.getEventByName(sanitizedEventName);
+
+        if (event.error) {
+            return res.status(event.status).json(event.error);
         }
-    },
-
-    
-
-
-    // Fetch event details
-    getEventDetails: async (req, res) => {
-        try {
-            const { eventId } = req.params;
-            const event = await Events.findById(eventId);  // Changed to 'Events'
-
-            if (!event) {
-                return res.status(404).json({ message: 'Event not found' });
-            }
-
-            res.status(200).json(event);
-        } catch (error) {
-            res.status(500).json({ message: 'Error fetching event details', error: error.message });
-        }
+        return res.status(200).json({event});
     },
 
     // Fetch all events
     getAllEvents: async (req, res) => {
-        fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-                return res.status(500).json({error: 'Error reading users data file'});
-            }
-            const events = JSON.parse(data).events;
-            if (events.length === 0) {
-                return res.status(404).json({ error: 'No events found'});
-            }
-            res.status(200).json(events);
-        })
-    },
-    unregisterShift: async (req, res) => {
-        try {
-            const { startTime, endTime, event, role } = req.body;
-            const user = req.user;
-    
-            // Convert to Date objects
-            let start = new Date(startTime);
-            let end = new Date(endTime);
-    
-            console.log("Parsed Start:", start, "Parsed End:", end);
-    
-            console.log("Querying for shift with:", event, role, "start:", start, "end:", end);
-    
-            // Find the specific shift for the event and role
-            const shift = await Shift.findOne({
-                event: { $regex: new RegExp(`^${event}$`, 'i') }, // Case-insensitive match for event
-                role,
-                "timeSlots.start": start,
-                "timeSlots.end": end,
-            });
-    
-            console.log("Matched Shift:", shift);
-    
-            if (!shift) {
-                return res.status(404).json({ message: 'Shift not found' });
-            }
-    
-            // Find the specific time slot in the shift
-            const timeSlot = shift.timeSlots.find(
-                ts => ts.start.getTime() === start.getTime() &&
-                    ts.end.getTime() === end.getTime()
-            );
-    
-            console.log("Matched TimeSlot:", timeSlot);
-    
-            if (!timeSlot || timeSlot.status !== 'registered') {
-                return res.status(400).json({ message: 'Shift is not registered or already unregistered' });
-            }
-    
-            // Unregister the user from the shift
-            timeSlot.status = 'available';
-            timeSlot.userId = null; // Remove the userId to unregister
-    
-            // Save the updated shift document
-            await shift.save();
-    
-            return res.status(200).json({ message: 'Shift unregistered successfully' }); // Ensure proper response
-        } catch (error) {
-            console.error('Error unregistering shift:', error);
-            return res.status(500).json({ message: 'Error unregistering shift', error: error.message });
+        const events = eventService.getAllEvents();
+        if (events.error) {
+            return res.status(events.status).json(events.error);
         }
+        res.status(200).json(events);
+    },
+
+    unregisterShift: async (req, res) => {
+        const { startTime, endTime, eventName, role } = req.body;
+        const user = req.user;
+
+        // Convert to Date objects
+        let start = new Date(startTime);
+        let end = new Date(endTime);
+
+        const shifts = shiftService.getShiftsByEventAndRole(eventName, role);
+        if (shifts.error) {
+            return res.status(shifts.status).json(shifts.error);
+        }
+
+        let timeSlot = null;
+        for (const shift of shifts.timeslot) {
+            if (shift.start === start && shift.end === end){
+                timeSlot = shift;
+            }
+
+        }
+        if (!timeSlot || timeSlot.status !== 'unavailable') {
+            return res.status(400).json({ message: 'Shift is already unregistered or not available' });
+        }
+
+        shiftService.setTimeslot(eventName, role, timeSlot, user.id, "unavailable");
+
+        res.status(200).json({ message: 'Shift unregistered successfully' });
     },
 
     
