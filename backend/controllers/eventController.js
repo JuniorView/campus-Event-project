@@ -1,23 +1,20 @@
 const eventService = require('../services/eventService');
 const shiftService = require('../services/shiftService');
+const userService = require('../services/userService');
 
 const eventController = {
     registerShift: async (req, res) => {
-        const { startTime, endTime, eventName, role } = req.body;
+        const { startTime, endTime, event, role } = req.body;
         const user = req.user;
 
-        // Convert to Date objects
-        let start = new Date(startTime);
-        let end = new Date(endTime);
-
-        const shifts = shiftService.getShiftsByEventAndRole(eventName, role);
+        const shifts = shiftService.getShiftsByEventAndRole(event, role);
         if (shifts.error) {
             return res.status(shifts.status).json(shifts.error);
         }
 
         let timeSlot = null;
         for (const shift of shifts.timeslot) {
-            if (shift.start === start && shift.end === end){
+            if (shift.start === startTime && shift.end === endTime){
                 timeSlot = shift;
             }
 
@@ -26,7 +23,7 @@ const eventController = {
             return res.status(400).json({ message: 'Shift is already taken or not available' });
         }
 
-        shiftService.setTimeslot(eventName, role, timeSlot.id, user.id, "available");
+        shiftService.setTimeslot(event, role, timeSlot.id, user.id, "registered");
 
         res.status(200).json({ message: 'Shift registered successfully' });
     },
@@ -44,13 +41,22 @@ const eventController = {
             return res.status(shifts.status).json(shifts.error);
         }
 
+
         // Map the timeSlots and populate user details
         const updatedSlots = shifts.timeslot.map(slot => {
+            let user = null;
+            if (slot.user_id !== 0) {
+                user = userService.getUserById(slot.user_id);
+                if (user.error) {
+                    return res.status(user.status).json(user.error); //this is not good, idk what else to do
+                }
+            }
+
             return {
-                _id: slot._id,
+                _id: slot.id,
                 start: slot.start,
                 end: slot.end,
-                user: slot.userId ? `${slot.userId.firstName} ${slot.userId.lastName}` : null, // Show user's name if registered
+                user: (slot.user_id && slot.user_id !== 0) ? `${user.firstName} ${user.lastName}` : null, // Show user's name if registered
                 status: slot.status,
                 conflict: slot.conflict
             };
@@ -99,30 +105,28 @@ const eventController = {
     },
 
     unregisterShift: async (req, res) => {
-        const { startTime, endTime, eventName, role } = req.body;
+        const { startTime, endTime, event, role } = req.body;
         const user = req.user;
 
-        // Convert to Date objects
-        let start = new Date(startTime);
-        let end = new Date(endTime);
 
-        const shifts = shiftService.getShiftsByEventAndRole(eventName, role);
+        const shifts = shiftService.getShiftsByEventAndRole(event, role);
         if (shifts.error) {
             return res.status(shifts.status).json(shifts.error);
         }
 
         let timeSlot = null;
         for (const shift of shifts.timeslot) {
-            if (shift.start === start && shift.end === end){
+            if (shift.start === startTime && shift.end === endTime){
                 timeSlot = shift;
+                break;
             }
 
         }
-        if (!timeSlot || timeSlot.status !== 'unavailable') {
+        if (!timeSlot || timeSlot.status !== 'registered') {
             return res.status(400).json({ message: 'Shift is already unregistered or not available' });
         }
 
-        shiftService.setTimeslot(eventName, role, timeSlot, user.id, "unavailable");
+        shiftService.setTimeslot(event, role, timeSlot.id, user.id, "available");
 
         res.status(200).json({ message: 'Shift unregistered successfully' });
     },
