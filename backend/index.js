@@ -4,7 +4,6 @@ const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes'); 
 const errorHandler = require('./middlewares/errorHandler');
-const { connectDB } = require('./helpers/getDatabase');
 
 const app = express();
 
@@ -22,17 +21,6 @@ app.use(session({
     saveUninitialized: false,
     cookie: { secure: false, httpOnly: true }, 
 }));
-
-// Database Connection
-(async () => {
-    try {
-        await connectDB();
-        console.log('Database connected successfully');
-    } catch (error) {
-        console.error('Failed to connect to database:', error.message);
-        process.exit(1);
-    }
-})();
 
 // Routes
 app.use('/api/users', userRoutes);
