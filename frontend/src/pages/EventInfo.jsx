@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import './EventInfo.css';
 
 const EventInfo = () => {
-    const { event, role } = useParams(); 
-
+    const { event, role } = useParams();
+    //ToDo: this needs to be pulled form the backend
     const roleDetails = {
         bar: {
             description: "Manage the bar and serve drinks.",
-            shift: "6:00 PM - 12:00 AM",
+            shift: "6:00 PM - 12:00 AM", //ToDo: calculate this rather then hardcode it
         },
         cocktail: {
             description: "Prepare specialty cocktails.",
@@ -24,6 +24,7 @@ const EventInfo = () => {
         },
     };
 
+    //ToDo: this needs to be pulled form the backend
     const eventDetails = {
         weihnachten: "A festive Christmas celebration.",
         halloween: "A spooky Halloween party.",
