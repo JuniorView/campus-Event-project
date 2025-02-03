@@ -22,4 +22,6 @@ router.get('/get-shifts', eventController.getShifts);
 // Get all events
 router.get('/', eventController.getAllEvents);
 
+router.get('/shifts/user/:userId', eventController.getShiftByUserId);
+
 module.exports = router;

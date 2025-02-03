@@ -80,21 +80,38 @@ const shiftService = {
 
         for (const currentShift of shifts) {
             let timeslots = [];
+
+            // Loop through each timeslot of the shift
             for (const currentTimeslot of currentShift.timeslot) {
-                if (currentTimeslot.user_id === userId) {
-                    timeslots.push(currentTimeslot);
+                // If the timeslot matches the userId, add it to the timeslots array
+                if (currentTimeslot.user_id === parseInt(userId)) {
+                    timeslots.push({
+                        id: currentTimeslot.id,
+                        start: currentTimeslot.start,
+                        end: currentTimeslot.end,
+                        status: currentTimeslot.status
+                    });
                 }
             }
-            let item = {"event_id": currentShift.event_id,
-                "timeslot": timeslots};
-            response.push(item);
+
+            // If there are any matching timeslots, push them to the response array along with the role
+            if (timeslots.length > 0) {
+                response.push({
+                    "event_id": currentShift.event_id,
+                    "role": currentShift.role, // Added role name here
+                    "timeslot": timeslots
+                });
+            }
         }
-        if (response.length > 0) {
-            return response;
+
+        // If no shifts were found, return an error
+        if (response.length === 0) {
+            return { error: 'No shifts found for this user', status: 400 };
         }
-        return {error: 'no Shifts found', status:400};
+
+        // Return the user's shifts
+        return response;
 
     }
-}
 
 module.exports = shiftService;

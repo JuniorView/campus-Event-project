@@ -1,0 +1,155 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.meine-schichten {
+    background-color: #A9A9A9;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(169, 169, 169, 1);
+    width: 100%;
+    max-width: 400px;
+    height: 560px; /* Set the height of the gray box */
+    position: relative;
+    right: 15px;
+}
+
+header {
+    background-color: #444;
+    padding: 10px 20px;
+    border-bottom: 2px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 70px; /* Increase the height of the header */
+    position: relative;
+    z-index: 1;
+    margin-bottom: 5px; /* Reduce spacing below the header */
+}
+
+header h1 {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+    margin: 0;
+    line-height: 70px; 
+    margin-left: 15px;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.icon:hover {
+    transform: scale(1.1); 
+    transition: transform 0.2s ease-in-out;
+}
+
+.home-icon {
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+.profile-icon {
+    margin-left: auto;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    margin-top: -10px;
+}
+
+main ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: -15px;
+}
+
+main ul li {
+    background-color: #555;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 8px;
+    width: 80%;
+    color: white;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+footer {
+    background-color: #222;
+    padding: 10px;
+    font-size: 14px;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin-top: 15px;
+    position: relative; 
+    right: 10px;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+.time-block {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+.conflict {
+    background-color: red;
+    color: white;
+}
+
+
+@media (max-width: 360px) {
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    .icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    main ul li {
+        padding: 12px;
+    }
+
+    footer p {
+        font-size: 0.8rem;
+    }
+}
+

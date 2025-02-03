@@ -173,11 +173,23 @@ const eventController = {
     },
 
     getShiftByUserId: async (req, res) => {
-        const shifts = shiftService.getShiftByUserId();
-        if (shifts.error) {
-            return res.status(shifts.status).json(shifts.error);
-        }
-        res.status(200).json(shifts);
+
+        const { userId } = req.params;  // Extract the userId from the request params
+
+    if (!userId) {
+        return res.status(400).json({ message: "Missing userId in the request" });
+    }
+
+    // Call the service to get shifts by userId
+    const shifts = shiftService.getShiftByUserId(userId);
+
+    // If an error occurs in the service, send the error response
+    if (shifts.error) {
+        return res.status(shifts.status).json(shifts.error);
+    }
+
+    // Send back the shifts for the given userId
+    res.status(200).json(shifts);
     }
 };
 
