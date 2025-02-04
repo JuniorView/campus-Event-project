@@ -1,85 +1,79 @@
 
-.event-info-container {
-    text-align: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    margin: 0 auto;
-    max-width: 800px;
-}
-
-
-.event-info-header {
-    background-color: #444;
-    color: white;
-    padding: 15px 20px;
-    text-align: center;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.event-info-header h1 {
+body {
     margin: 0;
-    font-size: 2rem;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
-
-.event-info-box {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
+.event-info {
+    background-color: #A9A9A9;
+    display: grid;
+    place-items: center;
+    padding: 20px;
     border-radius: 8px;
-    padding: 20px 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(169, 169, 169, 1);
+    width: 100%;
+    max-width: 400px;
+    height: 560px; /* Set the height of the gray box */
+    position: relative;
+    right: 15px;
 }
 
-.event-info-box h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.event-info-box p {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.5;
-    margin: 5px 0;
-}
-
-.back-btn {
-    display: inline-block;
+event-info-header{
     background-color: #444;
-    color: white;
     padding: 10px 20px;
-    font-size: 1rem;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 20px;
+    border-bottom: 2px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 70px; /* Increase the height of the header */
+    position: relative;
+    z-index: 1;
+    margin-bottom: 5px; /* Reduce spacing below the header */
+}
+
+header h1 {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    color: green;
+    margin: 0;
+    line-height: 70px;
+    margin-left: 15px;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
-.back-btn:hover {
-    background-color: #333;
-    transform: scale(1.05);
+.icon:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
 }
 
-
-@media (max-width: 768px) {
-    .event-info-box {
-        padding: 15px 20px;
-    }
-
-    .event-info-box h2 {
-        font-size: 1.3rem;
-    }
-
-    .event-info-box p {
-        font-size: 0.95rem;
-    }
-
-    .back-btn {
-        padding: 8px 16px;
-        font-size: 0.9rem;
-    }
+.home-icon {
+    margin-right: auto;
+    margin-top: 10px;
 }
+
+.profile-icon {
+    margin-left: auto;
+}
+
+@media (max-width: 360px) {
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    .icon {
+        width: 25px;
+        height: 25px;
+    }
+
+}
+
