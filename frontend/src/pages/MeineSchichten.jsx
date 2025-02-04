@@ -38,7 +38,7 @@ const MeineSchichten = () => {
 
    // Function to create hour blocks (e.g., "10:00-11:00")
 const getTimeBlock = (start) => {
-    const startHour = new Date(start).getHours();
+    const startHour = new Date(start).getUTCHours();
     return `${startHour}:00 - ${startHour + 1}:00`;
 };
 

@@ -1,4 +1,3 @@
-
 body {
     margin: 0;
     padding: 0;
@@ -7,66 +6,68 @@ body {
 
 .event-info {
     background-color: #A9A9A9;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Perfekte Zentrierung */
+    text-align: center; /* Alle Texte im Container zentrieren */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(169, 169, 169, 1);
     width: 100%;
     max-width: 400px;
-    height: 560px; /* Set the height of the gray box */
+    height: 560px; /* Höhe bleibt gleich */
     position: relative;
     right: 15px;
 }
 
-event-info-header{
+.event-info-header {
     background-color: #444;
     padding: 10px 20px;
     border-bottom: 2px solid #555;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center; /* Zentrierung der Elemente */
     width: 100%;
-    height: 70px; /* Increase the height of the header */
+    height: 70px; /* Header-Höhe bleibt */
     position: relative;
     z-index: 1;
-    margin-bottom: 5px; /* Reduce spacing below the header */
+    margin-bottom: 100px; /* Leichter Abstand */
 }
 
-header h1 {
+/* H1 innerhalb des Headers perfekt mittig */
+.event-info-header h1 {
     flex-grow: 1;
     text-align: center;
     font-size: 1.5rem;
-    color: green;
+    color: white;
     margin: 0;
     line-height: 70px;
-    margin-left: 15px;
 }
 
+.event-info p {
+    font-size: 1.2rem;
+    color: black;
+    max-width: 90%;
+    line-height: 1.5;
+}
+
+/* Icons */
 .icon {
     width: 30px;
     height: 30px;
     cursor: pointer;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.icon:hover {
-    transform: scale(1.1);
     transition: transform 0.2s ease-in-out;
 }
 
-.home-icon {
-    margin-right: auto;
-    margin-top: 10px;
+/* Hover Effekt */
+.icon:hover {
+    transform: scale(1.1);
 }
 
-.profile-icon {
-    margin-left: auto;
-}
-
+/* Responsive Anpassungen */
 @media (max-width: 360px) {
-    header h1 {
+    .event-info-header h1 {
         font-size: 1.2rem;
     }
 
@@ -74,6 +75,4 @@ header h1 {
         width: 25px;
         height: 25px;
     }
-
 }
-
