@@ -100,15 +100,13 @@ const Registration = () => {
     };
 
     const handleUnregister = async (shift) => {
-       
         const [shiftFirstName, shiftLastName] = shift.user?.split(" ") || [];
     
-      
+        // Check if the user trying to unregister is the one registered for the shift
         if (
             shiftFirstName !== userDetails?.firstName ||
             shiftLastName !== userDetails?.lastName
         ) {
-           
             alert("You can only unregister from shifts you are registered for.");
             return;
         }
@@ -121,7 +119,7 @@ const Registration = () => {
                 endTime: shift.end,
             };
     
-            console.log("Request Body to Unregister:", requestBody); 
+            console.log("Request Body to Unregister:", requestBody);
     
             const response = await fetch('http://localhost:5000/api/events/unregister', {
                 method: 'POST',
@@ -137,7 +135,8 @@ const Registration = () => {
             const data = await response.json();
             console.log('Shift unregistered successfully:', data);
     
-            fetchShifts(); // Refresh shifts to show the updated status
+            // Refresh the shifts after unregistering to show the updated status
+            fetchShifts();
         } catch (error) {
             console.error('Error unregistering shift:', error);
             setError(error.message);
