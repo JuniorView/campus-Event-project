@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './LoginForm.css';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
@@ -26,19 +26,17 @@ const LoginForm = () => {
             const response = await fetch('http://localhost:5000/api/users/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData),
+                credentials: 'include' // Include session cookies
             });
             const data = await response.json();
             if (response.ok) {
-               // alert('Registration successful!'); message will pop-up
                 setSuccessMessage(data.message); // Set success message
                 navigate('/dashboard');
             } else {
-               // alert(`Error: ${data.error}`);
                 setErrorMessage(data.error); // Set error message
             }
         } catch (error) {
-            //alert('Error: Could not connect to the server.');
             setErrorMessage('An unexpected error occurred. Please try again.');
         }
     };
