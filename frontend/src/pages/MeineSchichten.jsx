@@ -10,11 +10,15 @@ const MeineSchichten = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const userId = 1; // Test User ID 
+    const userId = 0;
+
 
     useEffect(() => {
         // Fetch shifts for the user
-        fetch(`http://localhost:5000/api/events/shifts/user/${userId}`)
+        fetch(`http://localhost:5000/api/events/shifts/user`,{
+            method: 'GET',
+            credentials: 'include', // Include the >session cookie
+        })
             .then((response) => response.json())
             .then((data) => {
                 setShifts(data);
@@ -30,7 +34,7 @@ const MeineSchichten = () => {
             .then((response) => response.json())
             .then((data) => setEvents(data))
             .catch((err) => console.error("Error fetching events:", err));
-    }, [userId]);
+    },[userId]);
 
    // Function to create hour blocks (e.g., "10:00-11:00")
 const getTimeBlock = (start) => {
@@ -42,6 +46,8 @@ const getTimeBlock = (start) => {
 const shiftTracker = {};
 const conflictingBlocks = new Set();
 
+
+console.log(shifts);
 shifts.forEach((shift) => {
     shift.timeslot.forEach((slot) => {
         const timeBlock = getTimeBlock(slot.start);

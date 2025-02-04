@@ -14,7 +14,7 @@ const Profile = () => {
     // Fetch the profile data when the component mounts
     fetch('http://localhost:5000/api/users/profile', {
       method: 'GET',
-      credentials: 'include', // Include the session cookie
+      credentials: 'include', // Include the >session cookie
     })
       .then((response) => {
         if (response.status === 401) {
