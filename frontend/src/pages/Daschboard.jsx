@@ -6,20 +6,20 @@ import homeIcon from "../images/home.jpg";
 
 const Dashboard = () => {
     const navigate = useNavigate();
-
-
+    
+    
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
+   
     const sanitizeForUrl = (name) => {
         return name.toLowerCase().replace(/[^a-z0-9]+/g, '-'); // Convert to lowercase and replace non-alphanumerics with hyphens
     };
 
-
+    
     useEffect(() => {
-        fetch('http://localhost:5000/api/events')
+        fetch('http://localhost:5000/api/events') 
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Error fetching events');
@@ -27,19 +27,19 @@ const Dashboard = () => {
                 return response.json();
             })
             .then((data) => {
-                setEvents(data);
-                setLoading(false);
+                setEvents(data);  
+                setLoading(false); 
             })
             .catch((err) => {
                 setError(err.message);
-                setLoading(false);
+                setLoading(false); 
             });
     }, []);
 
-
+    
     const handleEventClick = (event) => {
         const sanitizedEventName = sanitizeForUrl(event.name);
-        navigate(`/event-details/${sanitizedEventName}`);
+        navigate(`/event-details/${sanitizedEventName}`); 
     };
 
     if (loading) return <p>Loading events...</p>;
@@ -48,7 +48,7 @@ const Dashboard = () => {
     return (
         <div className="dashboard">
             <header className="dashboard-header">
-
+                
                 <img
                     src={homeIcon}
                     alt="Home Icon"
@@ -56,7 +56,7 @@ const Dashboard = () => {
                     onClick={() => navigate('/dashboard')}
                 />
                 <h1>Campus Events</h1>
-
+                
                 <img
                     src={profileIcon}
                     alt="Profile Icon"
@@ -67,13 +67,13 @@ const Dashboard = () => {
             <main>
                 <section>
                 <button onClick={() => navigate("/meine-schichten")}>Meine Schichten</button>
-
+                    
                     {events.length > 0 ? (
                         events.map((event) => (
                             <div
-                                key={event._id}
+                                key={event._id}  
                                 className="event-card"
-                                onClick={() => handleEventClick(event)}
+                                onClick={() => handleEventClick(event)} 
                             >
                                 {event.name} - {new Date(event.date).toLocaleDateString()}
                             </div>
@@ -93,3 +93,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

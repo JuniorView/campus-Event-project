@@ -71,16 +71,17 @@ const shiftService = {
     },
 
     getShiftByUserId(userId){
-        const shifts = this.getAllShifts();
-        if (!shifts){
-            return {error: 'Something went wrong', status:500};
+        const shifts = this.getAllShifts(); // Get all shifts
+        if (!shifts) {
+            return { error: 'Something went wrong', status: 500 }; // Handle case if shifts aren't found
         }
-
-        let response = [];
-
+    
+        let response = []; // Create an array to store the user's shifts
+    
+        // Loop through each shift
         for (const currentShift of shifts) {
             let timeslots = [];
-
+    
             // Loop through each timeslot of the shift
             for (const currentTimeslot of currentShift.timeslot) {
                 // If the timeslot matches the userId, add it to the timeslots array
@@ -93,7 +94,7 @@ const shiftService = {
                     });
                 }
             }
-
+    
             // If there are any matching timeslots, push them to the response array along with the role
             if (timeslots.length > 0) {
                 response.push({
@@ -103,15 +104,17 @@ const shiftService = {
                 });
             }
         }
-
+    
         // If no shifts were found, return an error
         if (response.length === 0) {
             return { error: 'No shifts found for this user', status: 400 };
         }
-
+    
         // Return the user's shifts
         return response;
 
     }
+};
+
 
 module.exports = shiftService;

@@ -19,7 +19,7 @@ function App() {
             <Route path="/event-details/:event" element={<EventDetails />} />
             <Route path="/eventdetails/:event/:role/event-info" element={<EventInfo />} />
             <Route path="/registration/:event/:role" element={<Registration />} />
-
+      
         </Routes>
 
     </Router>

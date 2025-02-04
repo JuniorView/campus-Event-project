@@ -173,7 +173,7 @@ const eventController = {
     },
 
     getShiftByUserId: async (req, res) => {
-
+        
         const { userId } = req.params;  // Extract the userId from the request params
 
     if (!userId) {
