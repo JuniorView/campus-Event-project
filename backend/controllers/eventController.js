@@ -85,7 +85,7 @@ const eventController = {
     getEventDetailsByName: async (req, res) => {
         const { eventName } = req.params;
 
-        const sanitizedEventName = eventName.replace(/-/g, ' ');
+        const sanitizedEventName =  eventName.replace(/-/g, ' ');
         const event = eventService.getEventByName(sanitizedEventName);
 
         if (event.error) {

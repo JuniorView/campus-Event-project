@@ -1,8 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import './EventInfo.css';
+import homeIcon from "../images/home.jpg";
+import profileIcon from "../images/profile.jpg";
 
 const EventInfo = () => {
+    const navigate = useNavigate();
     const { event, role } = useParams();
     //ToDo: this needs to be pulled form the backend
     const roleDetails = {
@@ -26,8 +30,8 @@ const EventInfo = () => {
 
     //ToDo: this needs to be pulled form the backend
     const eventDetails = {
-        weihnachten: "A festive Christmas celebration.",
-        halloween: "A spooky Halloween party.",
+        weihnachtsfeier: "A festive Christmas celebration.",
+        halloweenparty: "A spooky Halloween party.",
     };
 
     const eventRoleInfo = roleDetails[role];
@@ -38,11 +42,20 @@ const EventInfo = () => {
     }
 
     return (
-        <div className="event-info-container">
-            <h1>{event} - {role}</h1>
-            <p><strong>Event Details:</strong> {eventInfo}</p>
-            <p><strong>Role Description:</strong> {eventRoleInfo.description}</p>
-            <p><strong>Shift:</strong> {eventRoleInfo.shift}</p>
+        <div className="event-info">
+            <header className="event-info-header">
+                <img src={homeIcon} alt="Home Icon" className="icon home-icon" onClick={() => navigate("/dashboard")}/>
+                <h1> Eventinfo </h1>
+                <img src={profileIcon} alt="Profile Icon" className="icon profile-icon"
+                     onClick={() => navigate("/profile")}/>
+            </header>
+
+                <h1>{event} - {role}</h1>
+                <p><strong>Event Details:</strong> {eventInfo}</p>
+                <p><strong>Role Description:</strong> {eventRoleInfo.description}</p>
+                <p><strong>Shift:</strong> {eventRoleInfo.shift}</p>
+
+
         </div>
     );
 };
