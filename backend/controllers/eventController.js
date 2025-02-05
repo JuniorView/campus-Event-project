@@ -106,29 +106,35 @@ const eventController = {
     unregisterShift: async (req, res) => {
         const { startTime, endTime, event, role } = req.body;
         const user = req.user;
-
-
+    
+        // Fetch shifts by event and role
         const shifts = shiftService.getShiftsByEventAndRole(event, role);
         if (shifts.error) {
             return res.status(shifts.status).json(shifts.error);
         }
-
+    
         let timeSlot = null;
+    
+        // Loop through the shifts to find the matching timeSlot
         for (const shift of shifts.timeslot) {
-            if (shift.start === startTime && shift.end === endTime){
+            if (shift.start === startTime && shift.end === endTime) {
                 timeSlot = shift;
-                break;
+                break; // Found the timeslot, exit the loop
             }
-
         }
-        if (!timeSlot || timeSlot.status !== 'registered') {
-            return res.status(400).json({ message: 'Shift is already unregistered or not available' });
+    
+        // Check if the timeslot is valid and currently registered
+        if (!timeSlot || timeSlot.status !== 'registered' || timeSlot.user_id !== user.id) {
+            return res.status(400).json({ message: 'Shift is either already unregistered, not registered, or not assigned to you' });
         }
-
-        shiftService.setTimeslot(event, role, timeSlot.id, user.id, "available");
-
+    
+        // Unregister the user by setting the user_id to 0 and the status to "available"
+        shiftService.setTimeslot(event, role, timeSlot.id, 0, "available");
+    
+        // Respond with a success message
         res.status(200).json({ message: 'Shift unregistered successfully' });
     },
+
 
     getAllNamesOfShiftsByEvent: async (req, res) => {
         const { eventName} = req.params;

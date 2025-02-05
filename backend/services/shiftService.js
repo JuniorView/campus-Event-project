@@ -30,6 +30,8 @@ const shiftService = {
         const eventId = eventService.getEventByName(eventName).id;
         let shiftIndex = 0;
         let slotIndex = 0;
+        
+        // Find the correct shift for the given event and role
         for (const currentShift in data.shifts) {
             if (data.shifts[currentShift].event_id === eventId &&
                 data.shifts[currentShift].role.toLowerCase() === role.toLowerCase()) {
@@ -37,15 +39,22 @@ const shiftService = {
                 break;
             }
         }
+        
         const timeslot = data.shifts[shiftIndex].timeslot;
+        
+        // Find the correct timeslot
         for (const currentSlot in timeslot) {
             if (timeslot[currentSlot].id === timeslotId){
                 slotIndex = currentSlot;
                 break;
             }
         }
+        
+        // Set the user_id to either userId or 0 (for unregistration), and update status
         data.shifts[shiftIndex].timeslot[slotIndex].user_id = userId;
         data.shifts[shiftIndex].timeslot[slotIndex].status = status;
+        
+        // Write the updated data back to the file
         fs.writeFileSync(filePath, JSON.stringify(data));
     },
 
