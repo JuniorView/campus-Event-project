@@ -23,11 +23,20 @@ Campus Event Platform is a web application built with **React (Vite)** and **Exp
 ### 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/campus-event-platform.git
-cd campus-event-platform
+git clone https://github.com/JuniorView/campus-Event-project.git
+```
+### 2. Navigate to the project folder and install dependencies:
+```bash
 npm install
-cd backend
+```
+### 3. Start the development server:
+```bash
+cd frontend
+```
 npm run dev
+### 4. Start the backend server:
+```bash
 cd backend
+```
 npm run  start
 
