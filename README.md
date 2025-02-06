@@ -24,3 +24,10 @@ Campus Event Platform is a web application built with **React (Vite)** and **Exp
 
 ```bash
 git clone https://github.com/yourusername/campus-event-platform.git
+cd campus-event-platform
+npm install
+cd backend
+npm run dev
+cd backend
+npm run  start
+
